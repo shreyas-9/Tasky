@@ -1,6 +1,7 @@
 const taskContainer = document.querySelector(".task_container")
 let globalTaskData=[];
 
+//generating a card
 const generateHTML = (taskData) => {
     return `<div id=${taskData.id} class="col-4">
     <div class="card">
@@ -25,3 +26,35 @@ const generateHTML = (taskData) => {
       </div>
   </div> `
 };
+//stringify -> which convert json objects into string
+let saveToLocalStorage = () => {
+    localStorage.setItem("taskyProject",JSON.stringify({card: globalTaskData}));
+}
+
+let insertToDOM = (content) => {
+    taskContainer.insertAdjacentHTML("beforeend",content)
+}
+//adding a new card
+const addNewCard = () => {
+    //get task data
+    let taskData = {
+        id: `${Date.now()}`,
+        title: document.getElementById(`taskTitle`).value,
+        image: document.getElementById(`imageURL`).value,
+        type: document.getElementById(`taskType`).value,
+        description: document.getElementById(`taskDescription`).value,
+    }
+
+    globalTaskData.push(taskData);
+    saveToLocalStorage();
+
+    let newCard = generateHTML(taskData);
+    insertToDOM(newCard);
+
+    //clear the entire form
+    document.getElementById("taskTitle").value="";
+    document.getElementById("imageURL").value="";
+    document.getElementById("taskType").value="";
+    document.getElementById("taskDescription").value="";
+
+}
